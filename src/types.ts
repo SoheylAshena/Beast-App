@@ -1,4 +1,4 @@
-declare module "react" {
+declare module 'react' {
   interface InputHTMLAttributes<T> extends HTMLAttributes<T> {
     webkitdirectory?: string;
     directory?: string;
@@ -11,6 +11,7 @@ export interface Song {
   artist: string;
   album: string;
   duration: number;
+  picture: { data: Uint8Array; format: string };
 }
 
 export interface FileSelectorProps {
@@ -41,4 +42,11 @@ export interface SongItemProps {
 export interface RootState {
   songs: Song[];
   currentSongIndex: number | null;
+}
+
+export interface SongInfoProps {
+  title: string;
+  artist: string;
+  album: string;
+  picture: { data: Uint8Array; format: string };
 }

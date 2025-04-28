@@ -1,6 +1,6 @@
-import { useDispatch } from "react-redux";
-import { addSongs } from "../Redux/Slices/songsSlice";
-import { processAudioFiles } from "../services/audioProcessing";
+import { useDispatch } from 'react-redux';
+import { addSongs } from '../Redux/Slices/songsSlice';
+import handleFilesSelected from '../services/handleFilesSelected';
 
 export const useFileHandling = () => {
   const dispatch = useDispatch();
@@ -8,10 +8,10 @@ export const useFileHandling = () => {
   const handleFolderSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     try {
-      const songs = await processAudioFiles(files);
+      const songs = await handleFilesSelected(files);
       dispatch(addSongs(songs));
     } catch (error) {
-      console.error("Failed to process audio files:", error);
+      console.error('Failed to process audio files:', error);
     }
   };
 
