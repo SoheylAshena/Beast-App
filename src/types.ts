@@ -50,3 +50,7 @@ export interface SongInfoProps {
   album: string;
   picture: { data: Uint8Array; format: string };
 }
+
+export interface PlayerControlsProps {
+  audioRef: React.RefObject<HTMLAudioElement | null>;
+}
