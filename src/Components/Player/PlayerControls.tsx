@@ -69,25 +69,34 @@ const PlayerControls = ({ audioRef }: PlayerControlsProps) => {
   };
 
   return (
-    <div className="flex w-full flex-col items-center space-y-6">
+    <div className="animate-fade-in mt-6 flex w-full flex-col items-center space-y-8">
       {/* Top Controls: Play, Previous, Next */}
-      <div className="flex gap-4">
-        <button onClick={playPrevious} className="rounded bg-gray-600 px-4 py-2 hover:bg-gray-700">
-          ◀ Prev
+      <div className="flex gap-6">
+        <button
+          onClick={playPrevious}
+          className="drop-shadow-glow rounded-full bg-gradient-to-tr from-fuchsia-700 via-cyan-700 to-blue-700 px-5 py-3 text-xl text-white shadow-lg transition-transform hover:scale-105 hover:from-fuchsia-500 hover:to-blue-500"
+        >
+          ◀
         </button>
 
-        <button onClick={togglePlayPause} className="rounded bg-blue-600 px-6 py-2 text-lg font-bold hover:bg-blue-700">
-          {isPlaying ? '⏸ Pause' : '▶ Play'}
+        <button
+          onClick={togglePlayPause}
+          className="drop-shadow-glow rounded-full border-4 border-white/10 bg-gradient-to-tr from-fuchsia-400 via-cyan-400 to-blue-400 px-8 py-4 text-2xl font-extrabold text-white shadow-xl transition-transform hover:scale-110"
+        >
+          {isPlaying ? '⏸' : '▶'}
         </button>
 
-        <button onClick={playNext} className="rounded bg-gray-600 px-4 py-2 hover:bg-gray-700">
-          Next ▶
+        <button
+          onClick={playNext}
+          className="drop-shadow-glow rounded-full bg-gradient-to-tr from-fuchsia-700 via-cyan-700 to-blue-700 px-5 py-3 text-xl text-white shadow-lg transition-transform hover:scale-105 hover:from-fuchsia-500 hover:to-blue-500"
+        >
+          ▶
         </button>
       </div>
 
       {/* Seek Bar */}
-      <div className="flex w-full items-center space-x-2">
-        <span className="w-10 text-right text-sm text-gray-500">{formatTime(currentTime)}</span>
+      <div className="flex w-full items-center space-x-3">
+        <span className="w-12 text-right font-mono text-sm text-cyan-200">{formatTime(currentTime)}</span>
 
         <input
           type="range"
@@ -95,15 +104,18 @@ const PlayerControls = ({ audioRef }: PlayerControlsProps) => {
           max={duration}
           value={currentTime}
           onChange={handleSeek}
-          className="w-full accent-blue-500"
+          className="h-2 w-full appearance-none rounded-lg bg-gray-800/60 accent-fuchsia-400 shadow-inner focus:ring-2 focus:ring-fuchsia-400 focus:outline-none"
         />
 
-        <span className="w-10 text-sm text-gray-500">{formatTime(duration)}</span>
+        <span className="w-12 font-mono text-sm text-cyan-200">{formatTime(duration)}</span>
       </div>
 
       {/* Volume and Mute */}
       <div className="flex items-center space-x-4">
-        <button onClick={toggleMute} className="rounded bg-gray-600 px-3 py-2 hover:bg-gray-700">
+        <button
+          onClick={toggleMute}
+          className="rounded-full bg-gradient-to-tr from-cyan-700 to-fuchsia-700 px-3 py-2 text-lg text-white shadow transition-transform hover:scale-110"
+        >
           {isMuted || volume === 0 ? '🔇' : '🔊'}
         </button>
 
@@ -114,18 +126,18 @@ const PlayerControls = ({ audioRef }: PlayerControlsProps) => {
           step="0.01"
           value={volume}
           onChange={handleVolumeChange}
-          className="w-32 accent-green-500"
+          className="h-2 w-32 appearance-none rounded-lg bg-gray-800/60 accent-cyan-400 shadow-inner focus:ring-2 focus:ring-cyan-400 focus:outline-none"
         />
       </div>
 
       {/* Playback Rate and Loop */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-6">
         <div className="flex items-center space-x-2">
-          <label className="text-sm text-gray-600">Speed:</label>
+          <label className="text-sm text-cyan-200">Speed:</label>
           <select
             value={playbackRate}
             onChange={changePlaybackRate}
-            className="rounded border border-gray-400 p-1 text-sm"
+            className="rounded-lg border border-cyan-400 bg-gray-900/80 p-1 text-sm text-cyan-200 focus:ring-2 focus:ring-cyan-400"
           >
             <option value="0.5">0.5x</option>
             <option value="1">1x</option>
@@ -136,9 +148,9 @@ const PlayerControls = ({ audioRef }: PlayerControlsProps) => {
 
         <button
           onClick={toggleLoop}
-          className={`rounded px-4 py-2 ${isLooping ? 'bg-purple-600 hover:bg-purple-700' : 'bg-gray-600 hover:bg-gray-700'}`}
+          className={`rounded-full border-2 px-5 py-2 text-lg font-bold shadow transition-all ${isLooping ? 'scale-110 border-fuchsia-400 bg-gradient-to-tr from-fuchsia-500 to-cyan-500 text-white' : 'border-cyan-400 bg-gray-800/80 text-cyan-200 hover:scale-105'}`}
         >
-          {isLooping ? '🔁 Looping' : 'Loop'}
+          {isLooping ? '🔁' : 'Loop'}
         </button>
       </div>
     </div>

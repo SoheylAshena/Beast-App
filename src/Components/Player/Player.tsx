@@ -9,8 +9,8 @@ export default function Player({ songs }: PlayerProps) {
 
   if (!result || result.currentSongIndex === null) {
     return (
-      <div className="flex w-full flex-col items-center p-4">
-        <p className="text-gray-400">Select a song to play</p>
+      <div className="animate-fade-in flex min-h-[350px] w-full flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-8 shadow-lg">
+        <p className="drop-shadow-glow text-lg font-semibold text-fuchsia-300">Select a song to play</p>
       </div>
     );
   }
@@ -18,7 +18,7 @@ export default function Player({ songs }: PlayerProps) {
   const { audioRef, currentSong } = result;
 
   return (
-    <div className="flex w-full flex-col items-center p-4">
+    <div className="animate-fade-in flex min-h-[350px] w-full flex-col items-center rounded-2xl border border-white/10 bg-white/5 p-8 shadow-lg">
       <SongInfo
         title={currentSong.title}
         artist={currentSong.artist}
