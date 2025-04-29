@@ -1,23 +1,34 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-type CurrentSongState = number | null;
+type CurrentSongState = number;
 
-const initialState: CurrentSongState = null;
+const initialState: CurrentSongState = 1;
 
 const currentSongSlice = createSlice({
-  name: "currentSongIndex",
+  name: 'currentSongIndex',
   initialState,
   reducers: {
     setCurrentSongIndex: (_state, action) => {
       return action.payload;
     },
+    goToNextIndex: (state) => {
+      if (state !== null) {
+        return state + 1;
+      }
+    },
+    goToPreviousIndex: (state) => {
+      if (state !== null) {
+        return state - 1;
+      }
+    },
+
     clearCurrentSongIndex: () => {
-      return null;
+      return 0;
     },
   },
 });
 
-export const { setCurrentSongIndex, clearCurrentSongIndex } =
+export const { setCurrentSongIndex, clearCurrentSongIndex, goToNextIndex, goToPreviousIndex } =
   currentSongSlice.actions;
 
 export default currentSongSlice.reducer;

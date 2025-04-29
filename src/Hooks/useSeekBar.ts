@@ -16,8 +16,12 @@ export const useSeekBar = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(audio.duration);
+    const updateTime = () => {
+      setCurrentTime(audio.currentTime);
+    };
+    const updateDuration = () => {
+      setDuration(audio.duration);
+    };
 
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);

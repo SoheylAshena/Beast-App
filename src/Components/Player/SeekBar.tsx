@@ -1,14 +1,11 @@
-import { useMemo, useCallback } from 'react';
 import { useSeekBar } from '../../Hooks/useSeekBar';
 import { formatDuration } from '../../Utilities/formatDuration';
 
 const SeekBar = () => {
   const { currentTime, duration, handleSeek } = useSeekBar();
 
-  const formattedCurrentTime = useMemo(() => formatDuration(currentTime), [currentTime]);
-  const formattedDuration = useMemo(() => formatDuration(duration), [duration]);
-
-  const memoizedHandleSeek = useCallback(handleSeek, [handleSeek]);
+  const formattedCurrentTime = formatDuration(currentTime);
+  const formattedDuration = formatDuration(duration);
 
   return (
     <div className="flex w-full items-center space-x-3">
@@ -19,7 +16,7 @@ const SeekBar = () => {
         min="0"
         max={duration}
         value={currentTime}
-        onChange={memoizedHandleSeek}
+        onChange={handleSeek}
         className="h-2 w-full appearance-none rounded-lg bg-blue-800/30 accent-fuchsia-400 shadow-inner focus:outline-none"
       />
 

@@ -1,33 +1,24 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentSongIndex } from '../Redux/Slices/currentSongSlice';
-import type { RootState } from '../types';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useAudioRef } from '../Context/AudioRefContext/useAudioRef';
+import { goToNextIndex, goToPreviousIndex } from '../Redux/Slices/currentSongSlice';
 
 export const useAudioControls = () => {
   const audioRef = useAudioRef();
   const dispatch = useDispatch();
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const currentSongIndex = useSelector((state: RootState) => state.currentSongIndex);
-  const songsLength = useSelector((state: RootState) => state.songs.length);
+  const playNext = () => {
+    dispatch(goToNextIndex());
+  };
 
-  const playNext = useCallback(() => {
-    if (currentSongIndex === null || songsLength === 0) return;
-    const nextIndex = (currentSongIndex + 1) % songsLength;
-    dispatch(setCurrentSongIndex(nextIndex));
-  }, [currentSongIndex, songsLength, dispatch]);
+  const playPrevious = () => {
+    dispatch(goToPreviousIndex());
+  };
 
-  const playPrevious = useCallback(() => {
-    if (currentSongIndex === null || songsLength === 0) return;
-    const prevIndex = (currentSongIndex - 1 + songsLength) % songsLength;
-    dispatch(setCurrentSongIndex(prevIndex));
-  }, [currentSongIndex, songsLength, dispatch]);
-
-  const togglePlayPause = useCallback(() => {
-    if (!currentSongIndex) return;
+  const togglePlayPause = () => {
     setIsPlaying((prev) => !prev);
-  }, [currentSongIndex]);
+  };
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -38,15 +29,12 @@ export const useAudioControls = () => {
     } else {
       audio.pause();
     }
-  }, [isPlaying, currentSongIndex, audioRef]);
+  }, [isPlaying, audioRef]);
 
-  return useMemo(
-    () => ({
-      isPlaying,
-      togglePlayPause,
-      playNext,
-      playPrevious,
-    }),
-    [isPlaying, togglePlayPause, playNext, playPrevious],
-  );
+  return {
+    isPlaying,
+    togglePlayPause,
+    playNext,
+    playPrevious,
+  };
 };
