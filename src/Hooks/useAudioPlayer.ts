@@ -1,21 +1,19 @@
-import { useRef } from "react";
-import { useSelector } from "react-redux";
-import { RootState, Song } from "../types";
+import { useSelector } from 'react-redux';
+import { useAudioRef } from '../Context/AudioRefContext/useAudioRef';
+import { RootState } from '../types';
 
-export const useAudioPlayer = (songs: Song[]) => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const currentSongIndex = useSelector(
-    (state: RootState) => state.currentSongIndex
-  );
+export const useAudioPlayer = () => {
+  const audioRef = useAudioRef();
+  const songs = useSelector((state: RootState) => state.songs);
+  const currentSongIndex = useSelector((state: RootState) => state.currentSongIndex);
 
-  if (currentSongIndex === null) {
-    return;
+  if (currentSongIndex === null || songs.length === 0) {
+    return { audioRef, url: null, currentSong: null };
   }
   const currentSong = songs[currentSongIndex];
-
+  const url = currentSong ? URL.createObjectURL(currentSong.file) : null;
   return {
     audioRef,
-    currentSong,
-    currentSongIndex,
+    url,
   };
 };

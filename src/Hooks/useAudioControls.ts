@@ -1,35 +1,33 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentSongIndex } from "../Redux/Slices/currentSongSlice";
-import type { RootState } from "../types";
+import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentSongIndex } from '../Redux/Slices/currentSongSlice';
+import type { RootState } from '../types';
+import { useAudioRef } from '../Context/AudioRefContext/useAudioRef';
 
-export const useAudioControls = (
-  audioRef: React.RefObject<HTMLAudioElement | null>
-) => {
+export const useAudioControls = () => {
+  const audioRef = useAudioRef();
   const dispatch = useDispatch();
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const currentSongIndex = useSelector(
-    (state: RootState) => state.currentSongIndex
-  );
-  const songs = useSelector((state: RootState) => state.songs);
+  const currentSongIndex = useSelector((state: RootState) => state.currentSongIndex);
+  const songsLength = useSelector((state: RootState) => state.songs.length);
 
-  const playNext = () => {
-    if (currentSongIndex === null || songs.length === 0) return;
-    const nextIndex = (currentSongIndex + 1) % songs.length;
+  const playNext = useCallback(() => {
+    if (currentSongIndex === null || songsLength === 0) return;
+    const nextIndex = (currentSongIndex + 1) % songsLength;
     dispatch(setCurrentSongIndex(nextIndex));
-  };
+  }, [currentSongIndex, songsLength, dispatch]);
 
-  const playPrevious = () => {
-    if (currentSongIndex === null || songs.length === 0) return;
-    const prevIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+  const playPrevious = useCallback(() => {
+    if (currentSongIndex === null || songsLength === 0) return;
+    const prevIndex = (currentSongIndex - 1 + songsLength) % songsLength;
     dispatch(setCurrentSongIndex(prevIndex));
-  };
+  }, [currentSongIndex, songsLength, dispatch]);
 
-  const togglePlayPause = () => {
+  const togglePlayPause = useCallback(() => {
     if (!currentSongIndex) return;
     setIsPlaying((prev) => !prev);
-  };
+  }, [currentSongIndex]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -42,10 +40,13 @@ export const useAudioControls = (
     }
   }, [isPlaying, currentSongIndex, audioRef]);
 
-  return {
-    isPlaying,
-    togglePlayPause,
-    playNext,
-    playPrevious,
-  };
+  return useMemo(
+    () => ({
+      isPlaying,
+      togglePlayPause,
+      playNext,
+      playPrevious,
+    }),
+    [isPlaying, togglePlayPause, playNext, playPrevious],
+  );
 };

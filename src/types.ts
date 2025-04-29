@@ -1,3 +1,6 @@
+import { IPicture } from 'music-metadata';
+import store from './Redux/store';
+
 declare module 'react' {
   interface InputHTMLAttributes<T> extends HTMLAttributes<T> {
     webkitdirectory?: string;
@@ -5,13 +8,16 @@ declare module 'react' {
   }
 }
 
+export type RootState = ReturnType<typeof store.getState>;
+
 export interface Song {
+  id: string;
   file: File;
   title: string;
   artist: string;
   album: string;
   duration: number;
-  picture: { data: Uint8Array; format: string };
+  picture: IPicture | null;
 }
 
 export interface FileSelectorProps {
@@ -33,22 +39,11 @@ export interface FileProcessingResult {
 }
 
 export interface SongItemProps {
+  id: string;
   title: string;
   artist: string;
   duration: number;
   index: number;
-}
-
-export interface RootState {
-  songs: Song[];
-  currentSongIndex: number | null;
-}
-
-export interface SongInfoProps {
-  title: string;
-  artist: string;
-  album: string;
-  picture: { data: Uint8Array; format: string };
 }
 
 export interface PlayerControlsProps {

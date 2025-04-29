@@ -1,19 +1,21 @@
-import { useDispatch } from 'react-redux';
-import { addSongs } from '../Redux/Slices/songsSlice';
-import handleFilesSelected from '../services/handleFilesSelected';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../types';
+import { setSongs } from '../Redux/Slices/songsSlice';
+import { loadSongsFromIndexedDB } from '../services/DataBase';
+import { useEffect } from 'react';
 
 export const useFileHandling = () => {
   const dispatch = useDispatch();
+  const songs = useSelector((state: RootState) => state.songs);
 
-  const handleFolderSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    try {
-      const songs = await handleFilesSelected(files);
-      dispatch(addSongs(songs));
-    } catch (error) {
-      console.error('Failed to process audio files:', error);
-    }
-  };
+  //This will load the data from DataBase and dispatch it to a redux Store
+  useEffect(() => {
+    const loadSongs = async () => {
+      const savedSongs = await loadSongsFromIndexedDB();
+      dispatch(setSongs(savedSongs));
+    };
+    loadSongs();
+  }, [dispatch]);
 
-  return { handleFolderSelect };
+  return { songs };
 };

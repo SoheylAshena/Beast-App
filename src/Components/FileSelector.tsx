@@ -1,10 +1,13 @@
+import { handleFolderSelect } from '../services/handleFolderSelect';
 import { useFileHandling } from '../Hooks/useFileHandling';
 
 export default function FileSelector() {
-  const { handleFolderSelect } = useFileHandling();
+  const { songs } = useFileHandling();
+
+  if (songs.length >= 1) return null;
 
   return (
-    <div className="animate-fade-in mx-auto mb-6 flex max-w-md flex-col items-center rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md">
+    <div className="mx-auto flex max-w-md flex-col items-center rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl">
       <h2 className="drop-shadow-glow mb-4 bg-gradient-to-r from-fuchsia-400 via-cyan-400 to-blue-400 bg-clip-text text-3xl font-bold text-transparent">
         Select Music Folder
       </h2>

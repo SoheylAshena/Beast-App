@@ -1,31 +1,31 @@
-import type { SongListProps } from '../../types';
+import { useSelector } from 'react-redux';
 import SongItem from './SongItem';
+import { RootState } from '../../types';
 
-function EmptySongList() {
-  return <div className="animate-fade-in mt-6 w-full text-center text-cyan-300/80 italic">No songs available</div>;
-}
+const SongList = () => {
+  const songs = useSelector((state: RootState) => state.songs);
 
-export default function SongList({ songs }: SongListProps) {
-  if (!songs || songs.length === 0) {
-    return <EmptySongList />;
-  }
+  if (songs.length === 0) return null;
 
   return (
     <section
       aria-label="Song list"
-      className="animate-fade-in mt-6 max-h-[calc(100vh-200px)] w-full overflow-y-auto rounded-2xl border border-white/10 bg-white/5 p-4 shadow-lg"
+      className="animate-fade-in scrollbar-none h-[calc(100vh-200px)] w-full overflow-y-auto rounded-2xl border border-white/20 bg-white/5 p-4 shadow-lg"
     >
       <ul className="space-y-2">
         {songs.map((song, idx) => (
           <SongItem
-            key={`${song.title}-${idx}`}
+            key={song.id}
             title={song.title}
             artist={song.artist}
             duration={song.duration}
+            id={song.id}
             index={idx}
           />
         ))}
       </ul>
     </section>
   );
-}
+};
+
+export default SongList;
