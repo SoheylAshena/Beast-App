@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '../types';
+import { goToNextSong, goToPreviousSong } from '../Redux/Thunks/musicNavigationThunk'; // Adjust path to where thunks are
 import { useAudioRef } from '../Context/AudioRefContext/useAudioRef';
-import { goToNextIndex, goToPreviousIndex } from '../Redux/Slices/currentSongSlice';
 
 export const useAudioControls = () => {
   const audioRef = useAudioRef();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [isPlaying, setIsPlaying] = useState(false);
 
   const playNext = () => {
-    dispatch(goToNextIndex());
+    dispatch(goToNextSong()); // Dispatch the thunk to go to the next song
   };
 
   const playPrevious = () => {
-    dispatch(goToPreviousIndex());
+    dispatch(goToPreviousSong()); // Dispatch the thunk to go to the previous song
   };
 
   const togglePlayPause = () => {
