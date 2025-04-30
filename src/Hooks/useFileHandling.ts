@@ -1,21 +1,28 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../types';
-import { setSongs } from '../Redux/Slices/songsSlice';
-import { loadSongsFromIndexedDB } from '../services/DataBase';
 import { useEffect } from 'react';
+import { loadSongsFromIndexedDB } from '../services/DataBase';
+import { setSongs } from '../Redux/Slices/songsSlice';
 
 export const useFileHandling = () => {
-  const dispatch = useDispatch();
   const songs = useSelector((state: RootState) => state.songs);
+  const dispatch = useDispatch();
 
-  //This will load the data from DataBase and dispatch it to a redux Store
   useEffect(() => {
-    const loadSongs = async () => {
-      const savedSongs = await loadSongsFromIndexedDB();
-      dispatch(setSongs(savedSongs));
-    };
-    loadSongs();
-  }, [dispatch]);
+    if (songs.length === 0) {
+      const loadSongs = async () => {
+        try {
+          const dbSongs = await loadSongsFromIndexedDB();
+          if (dbSongs.length > 0) {
+            dispatch(setSongs(dbSongs));
+          }
+        } catch (error) {
+          console.error('Failed to load songs from database:', error);
+        }
+      };
+      loadSongs();
+    }
+  }, [songs.length, dispatch]);
 
   return { songs };
 };

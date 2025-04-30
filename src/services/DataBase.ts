@@ -16,6 +16,7 @@ const dbPromise = openDB(DB_NAME, DB_VERSION, {
 export async function saveSongMetadata(song: Omit<Song, 'picture'>) {
   const db = await dbPromise;
   await db.put(SONGS_STORE, song);
+  return song;
 }
 
 export async function saveSongImage(id: string, data: Uint8Array, format: string) {

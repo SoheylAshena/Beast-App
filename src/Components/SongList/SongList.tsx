@@ -5,8 +5,6 @@ import { RootState } from '../../types';
 const SongList = () => {
   const songs = useSelector((state: RootState) => state.songs);
 
-  if (songs.length === 0) return null;
-
   return (
     <section
       aria-label="Song list"

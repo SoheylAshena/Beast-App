@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAudioRef } from '../Context/AudioRefContext/useAudioRef';
 
 export const usePlaybackRateAndLoop = () => {
@@ -20,6 +20,13 @@ export const usePlaybackRateAndLoop = () => {
       setIsLooping(!isLooping);
     }
   };
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.playbackRate = playbackRate;
+  });
 
   return {
     playbackRate,

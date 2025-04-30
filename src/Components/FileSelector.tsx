@@ -1,10 +1,7 @@
-import { handleFolderSelect } from '../services/handleFolderSelect';
-import { useFileHandling } from '../Hooks/useFileHandling';
+import useFolderSelection from '../Hooks/useFolderSelection';
 
 export default function FileSelector() {
-  const { songs } = useFileHandling();
-
-  if (songs.length >= 1) return null;
+  const { handleFolderSelect } = useFolderSelection();
 
   return (
     <div className="mx-auto flex max-w-md flex-col items-center rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl">

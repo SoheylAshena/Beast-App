@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../types';
-import { goToNextSong, goToPreviousSong } from '../Redux/Thunks/musicNavigationThunk'; // Adjust path to where thunks are
+import { goToNextSong, goToPreviousSong } from '../Redux/Thunks/musicNavigationThunk';
 import { useAudioRef } from '../Context/AudioRefContext/useAudioRef';
 
 export const useAudioControls = () => {
@@ -25,12 +25,12 @@ export const useAudioControls = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    if (isPlaying) {
+    if (isPlaying && audio.paused) {
       audio.play();
-    } else {
+    } else if (!isPlaying && !audio.paused) {
       audio.pause();
     }
-  }, [isPlaying, audioRef]);
+  });
 
   return {
     isPlaying,
